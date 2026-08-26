@@ -17,7 +17,7 @@ Every analysis lives in `analyses/<slug>/`. Run-bound analyses reuse the run's n
 1. Create `analyses/<slug>/`. First line of the report names `sources:` — the runs, datasets, or files it reads (omit only for pure reasoning).
 2. The report is an executed notebook `<slug>_report.ipynb` whenever anything is computed; a markdown file when pure prose. Notebook shape: markdown cells sources / question / method / findings / verdict, code cells between; the verdict is stated first, answer before evidence.
 3. Numbers follow the AGENTS.md no-pasted-numbers rule. If the underlying data was never persisted, stop and tell the researcher — never reconstruct numbers from memory or conversation.
-4. Recurring queries import from `{{PACKAGE}}/analysis/`. Ad-hoc code lives beside the report and may be one-time; the moment code is needed a second time, move it to `{{PACKAGE}}/analysis/` in the same commit.
+4. Recurring queries import from `stable_harness/analysis/`. Ad-hoc code lives beside the report and may be one-time; the moment code is needed a second time, move it to `stable_harness/analysis/` in the same commit.
 5. Execute headlessly (`jupyter nbconvert --to notebook --execute --inplace <file>`), commit the notebook WITH outputs. The researcher reads rendered results and never runs cells.
 6. Report the verdict in chat. Spine line + commit.
 7. Route what the verdict spawns: a direction-steering resolution → propose a decision record; future work → backlog line; a framing contradiction → propose an amendment.

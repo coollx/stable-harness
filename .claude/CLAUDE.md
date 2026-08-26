@@ -1,3 +1,3 @@
-# {{PROJECT}}
+# stable-harness
 
 @../AGENTS.md

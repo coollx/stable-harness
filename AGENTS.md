@@ -1,6 +1,6 @@
 # AGENTS.md — the rulebook
 
-Project: {{PROJECT}} · Package: `{{PACKAGE}}/`
+Project: stable-harness · Package: `stable_harness/`
 Research identity, claims, and vocabulary: `docs/framing.md`. This file is how we work; that file is what we work on.
 
 ## The objects
@@ -16,7 +16,7 @@ Research identity, claims, and vocabulary: `docs/framing.md`. This file is how w
 |---|---|
 | [experiment] | `experiments/<family>/` — its runs, launcher, defaults.yaml, README |
 | [analysis] | `analyses/<slug>/` |
-| [code] | `{{PACKAGE}}/` (incl. configs/, tests/, `{{PACKAGE}}/analysis/`) |
+| [code] | `stable_harness/` (incl. configs/, tests/, `stable_harness/analysis/`) |
 | [asset] | its gitignored location (data/, checkpoints/, envs), announced by an [asset] spine line |
 | [reference] | `refs/related-work/<Name>/`; cross-paper work in `refs/lit-review/` |
 | [decision] | `docs/decisions/D-NNN-slug.md` |
@@ -51,7 +51,7 @@ Four fields, nothing else legal in the file (that is what keeps it one page):
     context: why this task exists; what spawned it (≤3 sentences)
     goal: what done looks like (≤3 sentences)
     plan:                      # linear, fully unfolded, one atomic operation per line
-      1. [code]       reward-variant switch — configs/rl/, {{PACKAGE}}/rl/reward.py
+      1. [code]       reward-variant switch — configs/rl/, stable_harness/rl/reward.py
       2. [experiment] run 183: judge term removed
       ...
 
@@ -74,7 +74,7 @@ Plans are edited freely as reality diverges (each edit = one spine line saying w
 - `analyses/<slug>/` is the only home for analysis of our own work, any scope. Run-bound analyses reuse the run's number+slug. `sources:` line names what it reads, when it reads anything.
 - The report is an executed notebook (`<slug>_report.ipynb`) whenever the analysis computes; markdown when pure prose. The agent executes it headlessly and commits it WITH outputs; the researcher never runs cells. Verdict first.
 - **No pasted numbers**: every number in a report is produced by a cell in the same notebook reading named persisted sources — tracked files (`summary.json`, `run.yaml`) preferred; intentionally-untracked paths (`outputs/` traces, local datasets) are legal when the sources line names them. The verdict cell may restate numbers computed below it. (This is what makes reports auditable — the predecessor's reports were unownable because number provenance was lost.)
-- Ad-hoc code lives beside its report and may be one-time; code needed twice moves to `{{PACKAGE}}/analysis/` in that same commit. Code that runs DURING an experiment (scorers, judges) is pipeline [code], never analysis.
+- Ad-hoc code lives beside its report and may be one-time; code needed twice moves to `stable_harness/analysis/` in that same commit. Code that runs DURING an experiment (scorers, judges) is pipeline [code], never analysis.
 
 ## Decisions
 
