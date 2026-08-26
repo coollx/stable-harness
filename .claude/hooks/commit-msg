@@ -1,0 +1,66 @@
+#!/bin/bash
+# The spine gate. Every commit adds a well-formed spine line under docs/log/ whose
+# task id matches the commit subject's "T-NNN:" prefix. docs/log is append-only.
+# Harness files (AGENTS.md, .claude/) change only in [meta] commits.
+# Emergencies: git commit --no-verify.
+subject=$(head -1 "$1")
+# real merges only — a "Merge ..." subject alone does not bypass the gate
+[ -e "$(git rev-parse --git-dir)/MERGE_HEAD" ] && exit 0
+
+TYPES='experiment|analysis|code|asset|reference|decision|task|framing|paper|meta'
+LINE="- [0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]) · T-[0-9]+ · \[($TYPES)\] .+ · .+"
+
+logdiff=$(git diff --cached -- docs/log)
+
+if echo "$logdiff" | grep -E '^-' | grep -vE '^---' | grep -q .; then
+  echo "commit rejected: docs/log is append-only — never edit or delete a spine line; a correction is a NEW line." >&2
+  exit 1
+fi
+
+added_all=$(echo "$logdiff" | grep -E '^\+' | grep -vE '^\+\+\+')
+malformed=$(echo "$added_all" | grep -vE "^\+$LINE" | grep -v '^+$' | grep -q . && echo yes)
+if [ "$malformed" = yes ]; then
+  echo "commit rejected: malformed spine line. Required shape:" >&2
+  echo "  - $(date +%F) · T-NNN · [type] summary · product/path      (type ∈ $TYPES)" >&2
+  exit 1
+fi
+
+added=$(echo "$added_all" | grep -E "^\+$LINE")
+if [ -z "$added" ]; then
+  echo "commit rejected: no spine line added under docs/log/." >&2
+  echo "append to docs/log/$(date +%Y-%m).md:  - $(date +%F) · T-NNN · [type] summary · product/path" >&2
+  echo "and commit as 'T-NNN: summary'. (--no-verify = emergency bypass)" >&2
+  exit 1
+fi
+
+tid=$(echo "$subject" | grep -oE '^T-[0-9]+')
+ids=$(echo "$added" | awk -F' · ' '{print $2}' | sort -u)
+if [ -z "$tid" ] || ! echo "$ids" | grep -qx "$tid"; then
+  echo "commit rejected: subject must start with 'T-NNN:' matching the added spine line (added: $(echo $ids | tr '\n' ' '))." >&2
+  exit 1
+fi
+foreign=$(echo "$ids" | grep -vx "$tid")
+if [ -n "$foreign" ]; then
+  echo "commit rejected: staged spine line(s) from another task/session ($(echo $foreign | tr '\n' ' '))." >&2
+  echo "Another session likely has an uncommitted line in the month file — let it commit first, then retry." >&2
+  exit 1
+fi
+
+if git diff --cached --name-only | grep -qE '^(AGENTS\.md|CLAUDE\.md|\.claude/)'; then
+  if ! echo "$added" | grep -q '\[meta\]'; then
+    echo "commit rejected: AGENTS.md/.claude/ change only in [meta] commits (invoke /meta)." >&2
+    exit 1
+  fi
+fi
+
+if [ "$(ls docs/tasks/${tid}-* 2>/dev/null | wc -l)" -gt 1 ]; then
+  echo "commit rejected: duplicate task files for $tid — two sessions allocated the same number." >&2
+  exit 1
+fi
+for r in $(echo "$added" | grep -oE 'runs/[0-9]+_' | grep -oE '[0-9]+' | sort -u); do
+  if [ "$(ls -d experiments/*/runs/${r}_* 2>/dev/null | wc -l)" -gt 1 ]; then
+    echo "commit rejected: run number $r exists in more than one family — duplicate allocation." >&2
+    exit 1
+  fi
+done
+exit 0

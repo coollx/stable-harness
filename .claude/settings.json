@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./scratch/scratch_pad.md)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash .claude/hooks/session_start.sh" }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "bash .claude/hooks/turn_end.sh" }
+        ]
+      }
+    ]
+  }
+}

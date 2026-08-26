@@ -1,0 +1,3 @@
+# {{PROJECT}}
+
+@../AGENTS.md
