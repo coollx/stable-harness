@@ -5,4 +5,6 @@ goal: `docs/framing.md` states the claim, setting, and vocabulary precisely enou
 plan:
   1. [framing]   initial framing: claim, setting, terms, open items marked — docs/framing.md
   2. [framing]   retraction: harness entropy replaced by harness plasticity as future value with a critic; constrained objective and its relaxation — docs/framing.md
-  3. [framing]   next iteration: proposer action space, training recipe, retention constraint — docs/framing.md
+  3. [framing]   amendment batched from the Harness Continual Learning (2608.19013) read: gamma as the user-set horizon preference — docs/framing.md
+  4. [framing]   amendment batched from the same read: positioning contrast, restoration edits inadmissible under its commit gate — docs/framing.md
+  5. [framing]   next iteration: proposer action space, training recipe, retention constraint — docs/framing.md
