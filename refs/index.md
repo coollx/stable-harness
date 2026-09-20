@@ -32,3 +32,5 @@ One row per reference: a self-contained folder under `related-work/` holding the
 ## Literature reviews and syntheses
 
 Cross-paper documents live in `lit-review/`, listed here, never as table rows.
+
+- [Measures of continual learning across the references](lit-review/continual-learning-measures.md) — 2026-09-19. Maps forgetting (two conventions), forward transfer, intransigence (three comparison learners), average accuracy and evolution gain, plus the four internal-state statistics and the falsification test that disqualifies them, across GEM, Riemannian-Walk, HCL, Loss-of-Plasticity, Understanding-Plasticity, Dormant-Neurons and AgentStream. Map only, no recommendation.
