@@ -33,7 +33,7 @@ After reading the paper (provided as PDF, text, or abstract), analyze and summar
 ### 4. Experimental Validation
    a) **Experimental design**: How do the authors validate effectiveness? Describe datasets, baselines, and evaluation setup.
    b) **Key results**: List 3-5 most representative metrics/findings that demonstrate superiority.
-   c) **Where does it shine?** Identify specific scenarios or datasets where gains are most pronounced, with evidence.
+   c) **Where are the gains largest?** Identify the specific scenarios or datasets, with evidence.
    d) **Limitations**: Note any acknowledged or implicit weaknesses (e.g., generalization, computational cost, data dependencies, scalability).
 
 ### 5. Reproduction & Application
