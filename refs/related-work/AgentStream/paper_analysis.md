@@ -91,7 +91,7 @@ The Harness condition is the authors' own implementation, not a reimplementation
 
 **Evolution signal**: strictly non-oracle. "Notably, no ground-truth labels are accessible at test time, and the evolution relies entirely on feedback intrinsic to the interaction, such as execution outcomes and reflective self-evaluation" (Sec. 3.1). The update is $S_t = \mathrm{Evolve}(S_{t-1}, \tau_t)$ over the trajectory $\tau_t = (q_t, h_t, y_t, r_t)$ where $r_t$ is self-generated feedback. In the Harness implementation the update sees only the task text, the injected skill names, and the step-by-step trace — no score of any kind (verified in the code, see `repo_analysis.md`).
 
-**Scoring protocol**: each task is solved with the state as it stood before that task arrived, and the state updates afterwards — $y_t = M(q_t, h_t \mid S_{t-1})$, then $S_t = \mathrm{Evolve}(S_{t-1}, \tau_t)$ (Sec. 3.1). This is exactly the score-before-update protocol of this project's framing, arrived at independently.
+**Scoring protocol**: each task is solved with the state as it stood before that task arrived, and the state updates afterwards — $y_t = M(q_t, h_t \mid S_{t-1})$, then $S_t = \mathrm{Evolve}(S_{t-1}, \tau_t)$ (Sec. 3.1). This is the protocol of this project's framing, arrived at independently: each task is graded with the harness that existed when the task arrived, and the harness is edited only afterward.
 
 **Aggregate metrics**: evolution gain $\Delta$ (eq. 1); positive rate (count of configurations with $\Delta > 0$); Top-1 rate (percentage of configurations where a scenario attains the highest accuracy); cumulative accuracy against task index (Appendix D).
 
@@ -169,7 +169,11 @@ Two denominators are in play and they are easy to conflate. Table 2 reports coun
 
 **The coupling axis is the only method property that predicts scenario preference.** The paper collapses five architecturally distinct methods onto one binary — is stored experience folded into the prompt, or retrieved per task — and that binary sorts Table 5 cleanly. ACE's Interleaved collapse is the sharpest instance: $+2.28$ under Isolated to $-1.26$ under Interleaved, a 3.5-point swing.
 
-**Cumulative accuracy frequently rises and then falls over a stream** (Appendix D, Figures 5-19). In Figure 5 (ACE on GPT-5.4), the Humanity's Last Exam panel peaks near 0.125 around task 13 and decays to roughly 0.05 by task 50 in all three scenarios. In Figure 7 (ACE on Claude Opus 4.7), BFCL falls from about 0.95 early to about 0.80 by task 50, and the Tau2 Interleaved curve falls from about 0.95 to about 0.73. In Figure 19 (Harness on Claude Opus 4.7), Tau2 under Isolated holds near 0.98 through task 25 and then declines to about 0.90, while the Sequential curve — the state that has absorbed 250 prior tasks before Tau2 begins — decays from about 0.95 to about 0.74. Because these are running averages, a falling curve means later tasks are being solved worse than earlier ones. The paper reports these figures without comment: Appendix D is one sentence long and offers no reading of them.
+**Most falls in cumulative accuracy cannot be attributed to the evolving state; two panels can** (Appendix D, Figures 5-19). Four properties of the plots decide what they can show. Each curve is the mean of the three seeds: its endpoint matches the three-seed mean in Table 1 (checked for Figures 7 and 19). The horizontal axis, labeled "Task index in stream", restarts at 1 for each benchmark in all three scenarios, so a panel shows one benchmark's 50 tasks, not the 300-task stream. Within one seed, the order of a benchmark's tasks is identical across the three scenarios and across the five methods (`task_ordering.py`, see `repo_analysis.md`), so a shape that all three scenarios share can come from task order, or from the few tasks behind the early points, rather than from the evolving state. No vanilla curve is plotted. The paper reports the figures without comment: Appendix D is one sentence long.
+
+Read with those properties, most falls are shared across scenarios and end near vanilla. In Figure 7 (ACE on Claude Opus 4.7), BFCL falls from 1.0 to between 0.81 and 0.85 under all three scenarios, against a vanilla score of 0.86. In Figure 5 (ACE on GPT-5.4), the Humanity's Last Exam panel peaks near 0.125 around task 13 and ends between 0.05 and 0.07; the peak rests on about five solved tasks across the three seeds. Three methods on Claude Opus 4.7 bend at the same Tau2 position, near task 23 (ACE and Harness under Isolated, A-Mem under Sequential), which points to a hard task at that position in the shared orders.
+
+Two panels separate the scenarios on identical tasks, so there the difference comes from the state. In Figure 7, ACE on Tau2 under Interleaved scores about 0.89 over the first 9 tasks and about 0.68 over tasks 10-50, against about 1.00 and 0.92 for Isolated on the same tasks and 0.80 for vanilla: above vanilla early, below it later, and all three Interleaved seeds end below vanilla (78, 76, 62; Tables 11-13). In Figure 19, Harness on Tau2 under Sequential, whose state has absorbed 250 tasks from the other five benchmarks, falls to 0.74 while Isolated ends at 0.91; the per-seed scores are 94, 42 and 86, so one run collapsed and the average hides it. Such single-run collapses are rare and not specific to long streams: in Tables 11-13, 9 of the 270 model-method-scenario-benchmark cells have one seed at least 20 points below both others, three in each scenario, and 8 of the 9 are on BFCL or Tau2. All curve values in this pattern are read by eye from the figures; the window averages are derived from those readings.
 
 ### c) Surprises and counterintuitive results
 
@@ -233,7 +237,7 @@ Four actionable rules, three of them the paper's own (Sec. 1, Sec. 6): apply sel
 
 ### b) For researchers
 
-The instrument is the contribution. Reorganizing existing benchmarks into a configurable stream with three named shapes, plus a one-line gain metric against a stateless control, is a protocol other work can adopt cheaply. The open questions it exposes: what governs the capability threshold; whether the coupling binary survives more methods; and — unasked by the paper — what happens past 300 tasks, given the decline visible in its own Appendix D.
+The instrument is the contribution. Reorganizing existing benchmarks into a configurable stream with three named shapes, plus a one-line gain metric against a stateless control, is a protocol other work can adopt cheaply. The open questions it exposes: what governs the capability threshold; whether the coupling binary survives more methods; and — unasked by the paper — what happens past 300 tasks, given that at least one Appendix D panel shows the evolving state pushing accuracy below vanilla late in the stream (section 3b).
 
 ### c) Acknowledged limitations (Sec. 7)
 
@@ -247,7 +251,7 @@ Two, stated plainly. First, "the notion of model capability strength used throug
 4. **No significance testing**, against gains smaller than the sampling noise of a single configuration.
 5. **Single-run vanilla baselines** anchoring every reported gain.
 6. **Claude Opus 4.7 cost is never reported**, so the cost analysis covers two of three models and the cost-performance conclusion generalizes from them.
-7. **Appendix D is presented without analysis.** Figures 5-19 are 15 pages of dynamics plots introduced by a single sentence; several panels show pronounced peak-then-decline shapes that the results sections do not mention.
+7. **Appendix D is presented without analysis.** Figures 5-19 are five pages of dynamics plots introduced by a single sentence, with no vanilla curve and no per-seed spread, so in most panels a reader cannot tell a state effect from task order; the two panels where scenarios diverge on identical tasks (section 3b) go unmentioned in the results sections.
 8. **The Harness condition is the authors' own construction**, so its ranking is evidence about this implementation rather than about published harness-evolving systems.
 
 ### e) Reproducibility
@@ -256,9 +260,9 @@ Strong on code, absent on data. The repository is public under Apache 2.0 at bot
 
 ### f) Transfer to our own work
 
-- The **evolution gain** $\Delta$ is, read literally, an undiscounted integral of stream performance under score-before-update against a no-adaptation control. That is precisely the quantity this project's claim is about, already defined, already instrumented, already measured for five systems on three models.
+- The **evolution gain** $\Delta$ is, read literally, an undiscounted integral of stream performance, with each task graded by the harness that existed when it arrived, against a no-adaptation control. That is precisely the quantity this project's claim is about, already defined, already instrumented, already measured for five systems on three models.
 - The **three stream shapes** are a ready-made knob for heterogeneity and non-stationarity, with a decisive empirical result attached: Sequential (ordered domain shift) is where deep-editing methods lose, so it is the discriminating regime for a plasticity claim, not Interleaved.
-- **Cumulative accuracy against task index** is the decline readout, and the code already writes it per task (`cumulative_avg_score` in `online_metrics.jsonl`), alongside step count, cost, state character count, and skill count — a harness-size series that supports the equal-harness-size control our falsifier needs.
+- **Cumulative accuracy against task index** becomes a decline readout only when compared with a reference on the same tasks, such as a no-state run or another scenario, because task order and small early samples shape a single curve; the code already writes the per-task scores needed (`cumulative_avg_score` in `online_metrics.jsonl`), alongside step count, cost, state character count, and skill count — a harness-size series that supports the equal-harness-size control our falsifier needs.
 - **What must be added**: an anchor set and a retention metric. AgentStream supplies the stream, the protocol, the baselines, and the gain metric; it supplies nothing about what the harness has lost, and its own design forecloses measuring it.
 
 ---
