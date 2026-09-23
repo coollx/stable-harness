@@ -48,11 +48,11 @@ The seed is deliberately crippled. NexAU-0 "is deliberately minimal: a single sh
 
 Algorithm 1 runs six phases per iteration $t$:
 
-1. **Rollout**: $T_t \leftarrow \textsc{Rollout}(M, H_{t-1}, D, k)$ — run the *previous* iteration's harness over the whole benchmark, $k$ rollouts per task. Every rollout runs in a fresh remote sandbox so shell side effects cannot leak between tasks (App. A).
+1. **Rollout**: $T_t \leftarrow \mathrm{Rollout}(M, H_{t-1}, D, k)$ — run the *previous* iteration's harness over the whole benchmark, $k$ rollouts per task. Every rollout runs in a fresh remote sandbox so shell side effects cannot leak between tasks (App. A).
 2. **Clean**: normalise traces into canonical form.
-3. **Attribute, then roll back** (only when $t \ge 2$): $V_t \leftarrow \textsc{Attribute}(C_{t-1}, T_{t-1}, T_t)$, then $H_{t-1} \leftarrow \textsc{Rollback}(H_{t-1}, V_t)$. The previous round's change manifest $C_{t-1}$ is intersected with the observed task-level deltas to produce a per-edit verdict; edits whose predicted fixes did not materialise are candidates for reversion. Attribution runs *before* distillation "so its verdict lands inside the evidence corpus and binds each prior manifest entry as a contract rather than a rationale" (Sec. 3.3).
-4. **Distil**: $R_t \leftarrow \textsc{AgentDebugger}(\tilde{T}_t)$ — layered evidence corpus.
-5. **Evolve**: $(H_t, C_t) \leftarrow \textsc{Evolve}(H_{t-1}, R_t, V_t)$ — workspace edits plus a new manifest.
+3. **Attribute, then roll back** (only when $t \ge 2$): $V_t \leftarrow \mathrm{Attribute}(C_{t-1}, T_{t-1}, T_t)$, then $H_{t-1} \leftarrow \mathrm{Rollback}(H_{t-1}, V_t)$. The previous round's change manifest $C_{t-1}$ is intersected with the observed task-level deltas to produce a per-edit verdict; edits whose predicted fixes did not materialise are candidates for reversion. Attribution runs *before* distillation "so its verdict lands inside the evidence corpus and binds each prior manifest entry as a contract rather than a rationale" (Sec. 3.3).
+4. **Distil**: $R_t \leftarrow \mathrm{AgentDebugger}(\tilde{T}_t)$ — layered evidence corpus.
+5. **Evolve**: $(H_t, C_t) \leftarrow \mathrm{Evolve}(H_{t-1}, R_t, V_t)$ — workspace edits plus a new manifest.
 6. **Commit**: tag the iteration in the workspace git history; update $H_{\mathrm{best}}$ if $\mathrm{pass@1}(T_t) > \mathrm{pass@1}(H_{\mathrm{best}})$.
 
 A one-shot explore agent runs in parallel with iteration 1 and seeds "a small number of reusable skills from the NexAU source and public coding-agent references. These skills receive no special protection: from iteration 2 onward the Evolve Agent may keep, refine, or remove them based on observed rollouts" (Sec. 3.3).
@@ -107,7 +107,7 @@ The evolve prompt also carries an explicit escalation rule — "**Anti-pattern:*
 
 The paper carries almost no mathematics; its two numbered equations are both metric definitions, and the optimisation target is stated in prose.
 
-**pass@1 (eq. 1, App. A)**: for a task set $D$ with $k$ rollouts per task and binary reward $r_{i,j} \in \{0,1\}$,
+**pass@1 (eq. 1, App. A)**: for a task set $D$ with $k$ rollouts per task and binary reward $r_{i,j} \in \lbrace 0,1 \rbrace$,
 
 $$\mathrm{pass@1} = \frac{1}{k|D|}\sum_{i=1}^{|D|}\sum_{j=1}^{k} r_{i,j}.$$
 
