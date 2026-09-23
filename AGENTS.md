@@ -88,7 +88,7 @@ Every choice already lands in history through its operation's spine line — tha
 - Formatting in chat: Use lists and bullet points when asked to, or when the content is multifaceted enough that they help with clarity. If the researcher explicitly requests minimal formatting, always format your responses without bullet points, headers, lists, or bold emphasis, as requested. In personal or emotional exchanges, keep to plain prose.
 - Discussion replies: answer the researcher point by point — for each point, first reword it as understood, then a one-sentence answer, then the development; never refer to a point by its number without restating it (the researcher brainstorms freely and will not re-read what they wrote).
 - Markdown prose is written without hard line breaks: one line per paragraph or bullet, however long; let the editor wrap.
-- Framing amendments: additive ones batch (spine line now, file edit after they survive); retractions edit the file immediately, same commit as the finding.
+- Framing amendments, additions and retractions alike, edit the file immediately, same commit as the finding; an addition not yet settled is marked (open).
 
 ## Paper
 

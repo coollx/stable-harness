@@ -1,6 +1,6 @@
 # Research framing
 
-The research identity: what this project claims, in what setting, and the words it uses. Edited rarely — additive amendments batch after they survive; retractions are edited in immediately. Items marked (open) are hypotheses or undecided details to be revisited.
+The research identity: what this project claims, in what setting, and the words it uses. Edited rarely; every amendment is edited in immediately. Items marked (open) are hypotheses or undecided details to be revisited.
 
 ## Claim
 
