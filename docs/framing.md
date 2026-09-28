@@ -30,7 +30,7 @@ The agent trained with $\lambda > 0$ sustains stream pass rate where the $\lambd
 
 Falsifier: $I_k$ does not rise along the stream under unregulated patching; or the $\lambda = 0$ agent, or a per-edit-gated system (Harness Continual Learning with a swept retention budget), matches the $\lambda > 0$ agent in mean stream pass rate at equal harness size.
 
-Out of scope: token or dollar cost as an objective term; self-editing of evaluators.
+Out of scope: self-editing of evaluators.
 
 Positioning, one clause each: Harness Continual Learning (2608.19013) uses plasticity and stability as labels for a fixed retention budget, never as a measured or estimated quantity, and freezes weights; SIA (2605.27276) routes between two layers with an untrained selector and scores each step on its own batch; Adaptive Auto-Harness (2606.01770) runs real task streams and fights bloat with prompt-level audits and branch isolation; Harness-R1 (2608.02276) trains the proposer with reinforcement learning at one layer on same-batch reward, discarding each patch after its batch; AgentStream (2608.00155) evaluates existing methods on streams and proposes nothing.
 
