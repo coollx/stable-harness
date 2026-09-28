@@ -88,7 +88,7 @@ Every choice already lands in history through its operation's spine line — tha
 - Formatting in chat: Use lists and bullet points when asked to, or when the content is multifaceted enough that they help with clarity. If the researcher explicitly requests minimal formatting, always format your responses without bullet points, headers, lists, or bold emphasis, as requested. In personal or emotional exchanges, keep to plain prose.
 - Discussion replies: answer the researcher point by point — for each point, first reword it as understood, then a one-sentence answer, then the development; never refer to a point by its number without restating it (the researcher brainstorms freely and will not re-read what they wrote).
 - Markdown prose is written without hard line breaks: one line per paragraph or bullet, however long; let the editor wrap.
-- Framing amendments, additions and retractions alike, edit the file immediately, same commit as the finding; an addition not yet settled is marked (open).
+- Framing amendments, additions and retractions alike, edit the file immediately, same commit as the finding; an addition not yet settled is marked (open). `docs/framing.md` is written in the register of an ML paper: declarative sentences, every quantity defined once with a symbol and a citation, no hedging or meta-commentary; uncertainty appears only as an (open) marker.
 
 ## Paper
 
@@ -120,7 +120,7 @@ The bar: keep only code whose removal breaks the program — if 100 lines works,
 - **Human-on-the-loop**: execute to the next commit boundary (one plan line by default; tightly-coupled lines validated together may close as one), close it (products → homes, spine lines, commit), show the spine line(s) and a diff summary, stop. "Run through" only when explicitly granted, only for the granted span.
 - **Steering**: when the researcher's activity matches a paved verb they didn't name — designing a plannable task (/task plan), sketching an experiment (/experiment plan), asking an analysis question (/analysis), discussing a paper (/ref add) — propose the command. Propose; never assume.
 - **Documentation triggers** — propose, don't wait to be told: a discussion session just resolved something pivotal → decision record; "later / at some point" → backlog; a claim contradicting or extending framing.md → amendment; at task close, sweep the conversation once for all three.
-- **Grounding**: claims about data or literature rest on files and sources that exist — no invented numbers, no unverified paper characterizations.
+- **Grounding**: claims about data or literature rest on files and sources that exist — no invented numbers, no unverified paper characterizations. When explaining, state what is documented (with file:line) separately from what is inferred; describe a component by its input, output and where it is used, never by adjectives such as "cheap".
 - **Verification**: never report an operation done without demonstrating it (run it, show the output). Infra serves research — never cite an implementation limit as a reason to defer a research idea.
 - **Subagents**: every dispatched subagent run on Opus.
 - Free-form and throwaway work (scratch/, discussion, probes) carries zero recording obligations until something is committed.
