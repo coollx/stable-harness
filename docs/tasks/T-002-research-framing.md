@@ -8,3 +8,4 @@ plan:
   3. [framing]   amendment batched from the Harness Continual Learning (2608.19013) read: gamma as the user-set horizon preference — docs/framing.md
   4. [framing]   amendment batched from the same read: positioning contrast, restoration edits inadmissible under its commit gate — docs/framing.md
   5. [framing]   next iteration: proposer action space, training recipe, retention constraint — docs/framing.md
+  6. [framing]   restructure in paper order: objective retracted to mean stream pass rate, gamma vocabulary removed, intransigence protocol, estimator and reward defined — docs/framing.md
