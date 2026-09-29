@@ -9,6 +9,7 @@ __pycache__/
 .env
 refs/**/repo/
 .claude/settings.local.json
+.vscode/
 # run folders: deny by default, re-include the three human/canonical files
 experiments/*/runs/**
 !experiments/*/runs/*/
