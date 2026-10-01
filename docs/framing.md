@@ -4,7 +4,7 @@ The research identity: what this project claims, in what setting, and the words 
 
 ## Problem
 
-A harness $h$ around a frozen language model is decomposed into layers ordered by depth: system prompt, tool description, tool implementation, middleware, skill, sub-agent configuration, long-term memory, model weights. It is edited after each chunk of a heterogeneous, non-stationary task stream: the model solves a chunk with $h_t$, a harness agent reads $h_t$ with the chunk's trajectories and pass rate, and outputs one edit (or none) that yields $h_{t+1}$. The stream has no end. The objective is the mean task pass rate over the stream, each task graded with the harness that existed when it arrived; labels may arrive late, as on a prediction market where the answer is known only when the event happens. (open: stream design; chunk size and whether chunks are fixed.)
+A harness $h$ around a frozen language model is decomposed into layers ordered by depth: system prompt, tool (its description and its implementation), middleware, skill, long-term memory. It is edited after each chunk of a heterogeneous, non-stationary task stream: the model solves a chunk with $h_t$, a harness agent reads $h_t$ with the chunk's trajectories and pass rate, and outputs one edit (or none) that yields $h_{t+1}$. The stream has no end. The objective is the mean task pass rate over the stream, each task graded with the harness that existed when it arrived; labels may arrive late, as on a prediction market where the answer is known only when the event happens. (open: stream design; chunk size and whether chunks are fixed.)
 
 Unregulated patching accumulates redundant and inconsistent content in $h$. The accumulated harness then learns a new task type more slowly than a harness built from scratch; this deficit is intransigence, $I$. Existing self-improving harnesses score each edit on the batch it was made from, which cannot detect the deficit; their stream pass rate peaks and then declines (AHE at round 8 of 10, Adaptive Auto-Harness at cycle 22 of 51, HarnessX from 73.8% to 49.5% on GAIA), and none measures why. Retention and generalization are the two other ways an edit lowers later pass rate; both are measured by prior work.
 
@@ -40,7 +40,7 @@ The vocabulary allowlist. A term or abbreviation may be used in project document
 
 | Term | Meaning |
 |---|---|
-| harness | Everything around the model that shapes its behavior: prompts, tool descriptions and implementations, middleware, skills, sub-agent configuration, long-term memory; plus the model weights when they are editable. |
+| harness | Everything around the model that shapes its behavior: the system prompt, tools (description and implementation), middleware, skills, long-term memory. |
 | layer | One of the harness components above, ordered by edit depth (cost to make, persistence, cost to undo). Depth axis only; not the episode-time axis of Life-Harness. |
 | task stream | Tasks arriving one after another, mixed in type, with a distribution that shifts over time. |
 | harness plasticity $\Phi(h)$ | The future stream performance achievable from harness $h$; intransigence is its measured deficit. |

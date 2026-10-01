@@ -9,3 +9,4 @@ plan:
   4. [framing]   amendment batched from the same read: positioning contrast, restoration edits inadmissible under its commit gate — docs/framing.md
   5. [framing]   next iteration: proposer action space, training recipe, retention constraint — docs/framing.md
   6. [framing]   restructure in paper order: objective retracted to mean stream pass rate, gamma vocabulary removed, intransigence protocol, estimator and reward defined — docs/framing.md
+  7. [framing]   amendment from the harness-component survey (T-033): layer list narrowed from eight to five, tool description and implementation merged, sub-agent configuration and weights removed — docs/framing.md
