@@ -28,5 +28,9 @@
   },
   "enabledPlugins": {
     "playwright@claude-plugins-official": false
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   }
 }
